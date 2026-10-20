@@ -1,0 +1,57 @@
+-- the player character; it stays in place while the world scrolls past
+-- the level controller decides when to vault, stumble or get caught, this script plays it out
+
+-- how high the player gets when vaulting a box, in pixels
+local vault_height = 110
+-- frames in the "jump" animation and its fps in Guy.tilesource
+local jump_frames = 16
+local jump_fps = 24
+
+local function run(self)
+	sprite.play_flipbook("#sprite", "run")
+end
+
+local function vault(self, duration)
+	-- stretch the jump animation to cover the whole vault
+	local rate = (jump_frames / jump_fps) / duration
+	sprite.play_flipbook("#sprite", "jump", nil, { playback_rate = rate })
+	local half = duration * 0.5
+	go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, self.ground_y + vault_height, go.EASING_OUTQUAD, half, 0, function()
+		go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, self.ground_y, go.EASING_INQUAD, half, 0, function()
+			run(self)
+		end)
+	end)
+end
+
+local function stumble(self)
+	sprite.play_flipbook("#sprite", "hurt", function()
+		run(self)
+	end)
+end
+
+local function caught(self)
+	go.cancel_animations(".", "position.y")
+	go.set_position(vmath.vector3(self.position.x, self.ground_y, self.position.z))
+	particlefx.play("#deathfx")
+	sprite.play_flipbook("#sprite", "death")
+end
+
+function init(self)
+	self.position = go.get_position()
+	self.ground_y = self.position.y
+	run(self)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("reset") then
+		go.cancel_animations(".", "position.y")
+		go.set_position(self.position)
+		run(self)
+	elseif message_id == hash("vault") then
+		vault(self, message.duration)
+	elseif message_id == hash("stumble") then
+		stumble(self)
+	elseif message_id == hash("caught") then
+		caught(self)
+	end
+end

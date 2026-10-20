@@ -1,0 +1,22 @@
+images {
+  image: "/ASSETS/city ruin backgrounds/background 4/Plan 1.png"
+}
+images {
+  image: "/ASSETS/city ruin backgrounds/background 4/Plan 2.png"
+}
+images {
+  image: "/ASSETS/city ruin backgrounds/background 4/Plan 3.png"
+}
+images {
+  image: "/ASSETS/city ruin backgrounds/background 4/Plan 4.png"
+}
+images {
+  image: "/ASSETS/city ruin backgrounds/background 4/Plan 5.png"
+}
+images {
+  image: "/ASSETS/city ruin backgrounds/background 4/Plan 6.png"
+}
+images {
+  image: "/ASSETS/city ruin backgrounds/background 4/Plan 7.png"
+}
+extrude_borders: 2

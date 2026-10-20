@@ -1,0 +1,184 @@
+script: "/level/hud.gui_script"
+fonts {
+  name: "score"
+  font: "/fonts/text.font"
+}
+nodes {
+  position {
+    x: 40.0
+    y: 670.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "DISTANCE"
+  font: "score"
+  id: "score_text"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  pivot: PIVOT_W
+  inherit_alpha: true
+  shadow_alpha: 0.0
+}
+nodes {
+  position {
+    x: 230.0
+    y: 670.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "0m"
+  font: "score"
+  id: "score"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  pivot: PIVOT_W
+  inherit_alpha: true
+  shadow_alpha: 0.0
+}
+nodes {
+  position {
+    x: 840.0
+    y: 670.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "LEAD"
+  font: "score"
+  id: "gap_text"
+  xanchor: XANCHOR_RIGHT
+  yanchor: YANCHOR_TOP
+  pivot: PIVOT_E
+  inherit_alpha: true
+  shadow_alpha: 0.0
+}
+nodes {
+  position {
+    x: 860.0
+    y: 670.0
+  }
+  size {
+    x: 380.0
+    y: 28.0
+  }
+  color {
+    x: 0.1
+    y: 0.1
+    z: 0.1
+  }
+  type: TYPE_BOX
+  id: "gap_bg"
+  xanchor: XANCHOR_RIGHT
+  yanchor: YANCHOR_TOP
+  pivot: PIVOT_W
+  inherit_alpha: true
+  alpha: 0.8
+}
+nodes {
+  position {
+    x: 4.0
+  }
+  size {
+    x: 372.0
+    y: 20.0
+  }
+  color {
+    x: 0.9
+    y: 0.2
+    z: 0.15
+  }
+  type: TYPE_BOX
+  id: "gap_fill"
+  pivot: PIVOT_W
+  parent: "gap_bg"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 632.0
+    y: 203.0
+  }
+  scale {
+    x: 2.0
+    y: 2.0
+  }
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "W"
+  font: "score"
+  id: "qte"
+  inherit_alpha: true
+  shadow_alpha: 0.0
+}
+nodes {
+  position {
+    y: -34.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 160.0
+    y: 12.0
+  }
+  type: TYPE_BOX
+  id: "qte_timer"
+  parent: "qte"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 420.0
+  }
+  scale {
+    x: 2.0
+    y: 2.0
+  }
+  size {
+    x: 400.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "CAUGHT!"
+  font: "score"
+  id: "game_over"
+  inherit_alpha: true
+  shadow_alpha: 0.0
+}
+nodes {
+  position {
+    y: -40.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 800.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "You ran 0m\n"
+  "Press SPACE to run again"
+  font: "score"
+  id: "game_over_info"
+  line_break: true
+  parent: "game_over"
+  inherit_alpha: true
+  shadow_alpha: 0.0
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

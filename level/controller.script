@@ -1,0 +1,225 @@
+-- runs the chase: a killer follows the player, and the distance between them is the player's health
+-- boxes scroll in from the right; each one triggers a quick time event (QTE)
+-- pass it and the player vaults the box and gains distance, fail it and the player stumbles and loses distance
+
+-- world
+local HERO_X = 760             -- must match the hero position in level.collection
+local GROUND_Y = 20            -- top of the Plan 1 floor strip
+local START_SPEED = 360        -- scroll speed in pixels/s
+local MAX_SPEED = 620
+local SPEED_STEP = 20          -- speed added every SPEED_STEP_TIME seconds
+local SPEED_STEP_TIME = 10
+local PIXELS_PER_METER = 40    -- for the distance score
+
+-- chase
+local START_GAP = 320          -- pixels between killer and player at the start
+local MAX_GAP = 560
+local CATCH_GAP = 40           -- the player is caught when the gap shrinks to this
+local KILLER_CREEP = 0         -- pixels/s the killer gains on its own (0 = same speed as the player)
+local GAP_CHANGE_SPEED = 250   -- how fast the killer visibly closes or loses distance, pixels/s
+local VAULT_GAIN = 70          -- gained when the killer crashes through a box the player vaulted
+local STUMBLE_LOSS = 110
+
+-- boxes and QTEs, distances are measured from the player to the box
+local SPAWN_X = 1400
+local SPAWN_MIN_TIME = 1.4
+local SPAWN_MAX_TIME = 2.6
+local QTE_DISTANCE = 420       -- the prompt appears when a box is this close
+local VAULT_DISTANCE = 110     -- a passed box gets vaulted from here
+local HIT_DISTANCE = 40        -- an unanswered or failed box trips the player here
+local QTE_KEYS = {
+	{ action = hash("qte_w"), label = "W" },
+	{ action = hash("qte_a"), label = "A" },
+	{ action = hash("qte_s"), label = "S" },
+	{ action = hash("qte_d"), label = "D" },
+}
+
+local RESTART_ACTIONS = { hash("jump"), hash("enter"), hash("touch"), hash("left_button") }
+
+local function is_any(action_id, actions)
+	for _, id in ipairs(actions) do
+		if action_id == id then
+			return true
+		end
+	end
+	return false
+end
+
+local function set_speed(self, speed)
+	self.speed = speed
+	msg.post("background#script", "set_speed", { speed = speed })
+end
+
+local function delete_boxes(self)
+	for _, box in ipairs(self.boxes) do
+		go.delete(box.id)
+	end
+	self.boxes = {}
+	self.qte = nil
+end
+
+local function start(self)
+	delete_boxes(self)
+	self.state = "running"
+	self.elapsed = 0
+	self.distance = 0
+	self.gap = START_GAP
+	self.gap_target = START_GAP
+	self.spawn_timer = SPAWN_MIN_TIME
+	set_speed(self, START_SPEED)
+	msg.post("hero#script", "reset")
+	msg.post("killer#script", "reset")
+	msg.post("hud", "reset")
+end
+
+local function game_over(self)
+	self.state = "over"
+	self.gap = CATCH_GAP
+	set_speed(self, 0)
+	if self.qte then
+		msg.post("hud", "hide_qte")
+		self.qte = nil
+	end
+	msg.post("hero#script", "caught")
+	msg.post("killer#script", "attack")
+	msg.post("hud", "show_game_over", { distance = math.floor(self.distance / PIXELS_PER_METER) })
+end
+
+local function spawn_box(self)
+	local id = factory.create("#box_factory", vmath.vector3(SPAWN_X, GROUND_Y, 0))
+	table.insert(self.boxes, { id = id, state = "waiting" })
+end
+
+local function start_qte(self, box, dist)
+	local key = QTE_KEYS[math.random(#QTE_KEYS)]
+	box.state = "prompt"
+	self.qte = { box = box, action = key.action }
+	msg.post("hud", "show_qte", { label = key.label, time = (dist - HIT_DISTANCE) / self.speed })
+end
+
+local function answer_qte(self, success)
+	local box = self.qte.box
+	self.qte = nil
+	-- the outcome plays out when the box reaches the player
+	box.state = success and "passed" or "failed"
+	msg.post("hud", "qte_result", { success = success })
+end
+
+local function knock_over(box)
+	box.state = "done"
+	go.animate(box.id, "euler.z", go.PLAYBACK_ONCE_FORWARD, -90, go.EASING_OUTBOUNCE, 0.4)
+end
+
+local function update_box(self, box, x)
+	local dist = x - HERO_X
+	if box.state == "waiting" and dist <= QTE_DISTANCE and not self.qte then
+		start_qte(self, box, dist)
+	elseif box.state == "passed" and dist <= VAULT_DISTANCE then
+		-- the vault lasts as long as the box takes to pass under the player
+		box.state = "vaulted"
+		msg.post("hero#script", "vault", { duration = VAULT_DISTANCE * 2 / self.speed })
+	elseif box.state == "vaulted" and x - (HERO_X - self.gap) <= HIT_DISTANCE then
+		-- the killer crashes through the box the player vaulted, losing ground
+		knock_over(box)
+		msg.post("killer#script", "knock")
+		self.gap_target = math.min(self.gap_target + VAULT_GAIN, MAX_GAP)
+	elseif (box.state == "prompt" or box.state == "failed") and dist <= HIT_DISTANCE then
+		if box.state == "prompt" then
+			-- ran out of time
+			answer_qte(self, false)
+		end
+		knock_over(box)
+		msg.post("hero#script", "stumble")
+		self.gap_target = self.gap_target - STUMBLE_LOSS
+	end
+end
+
+local function update_boxes(self, dt)
+	for i = #self.boxes, 1, -1 do
+		local box = self.boxes[i]
+		local pos = go.get_position(box.id)
+		pos.x = pos.x - self.speed * dt
+		go.set_position(pos, box.id)
+		if pos.x < -200 then
+			go.delete(box.id)
+			table.remove(self.boxes, i)
+		else
+			update_box(self, box, pos.x)
+		end
+	end
+end
+
+local function update_gap(self, dt)
+	self.gap_target = self.gap_target - KILLER_CREEP * dt
+	-- ease the visible gap toward the target so the killer doesn't teleport
+	local step = GAP_CHANGE_SPEED * dt
+	if self.gap < self.gap_target then
+		self.gap = math.min(self.gap + step, self.gap_target)
+	else
+		self.gap = math.max(self.gap - step, self.gap_target)
+	end
+	local killer = go.get_position("killer")
+	killer.x = HERO_X - self.gap
+	go.set_position(killer, "killer")
+	msg.post("hud", "set_gap", { fraction = (self.gap - CATCH_GAP) / (MAX_GAP - CATCH_GAP) })
+end
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	math.randomseed(os.time())
+	self.boxes = {}
+	start(self)
+end
+
+function final(self)
+	msg.post(".", "release_input_focus")
+end
+
+function update(self, dt)
+	if self.state ~= "running" then
+		return
+	end
+
+	-- speed up over time
+	self.elapsed = self.elapsed + dt
+	local steps = math.floor(self.elapsed / SPEED_STEP_TIME)
+	local speed = math.min(START_SPEED + steps * SPEED_STEP, MAX_SPEED)
+	if speed ~= self.speed then
+		set_speed(self, speed)
+	end
+
+	self.distance = self.distance + self.speed * dt
+	msg.post("hud", "set_score", { score = math.floor(self.distance / PIXELS_PER_METER) })
+
+	self.spawn_timer = self.spawn_timer - dt
+	if self.spawn_timer <= 0 then
+		spawn_box(self)
+		self.spawn_timer = SPAWN_MIN_TIME + math.random() * (SPAWN_MAX_TIME - SPAWN_MIN_TIME)
+	end
+
+	update_boxes(self, dt)
+	update_gap(self, dt)
+
+	if self.gap <= CATCH_GAP then
+		game_over(self)
+	end
+end
+
+function on_input(self, action_id, action)
+	print("DBG input", action_id, action.pressed, self.state)  -- DEBUG
+	if not action.pressed then
+		return
+	end
+	if self.state == "over" then
+		if is_any(action_id, RESTART_ACTIONS) then
+			start(self)
+		end
+	elseif self.qte then
+		for _, key in ipairs(QTE_KEYS) do
+			if action_id == key.action then
+				answer_qte(self, action_id == self.qte.action)
+				break
+			end
+		end
+	end
+end

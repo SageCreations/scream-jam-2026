@@ -1,0 +1,42 @@
+image: "/hero/homeless_1_sheet.png"
+tile_width: 128
+tile_height: 128
+animations {
+  id: "attack"
+  start_tile: 81
+  end_tile: 85
+  fps: 10
+}
+animations {
+  id: "death"
+  start_tile: 33
+  end_tile: 36
+  fps: 8
+}
+animations {
+  id: "hurt"
+  start_tile: 65
+  end_tile: 67
+  fps: 10
+}
+animations {
+  id: "idle"
+  start_tile: 49
+  end_tile: 54
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 8
+}
+animations {
+  id: "jump"
+  start_tile: 17
+  end_tile: 32
+  fps: 24
+}
+animations {
+  id: "run"
+  start_tile: 1
+  end_tile: 8
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 12
+}
+sprite_trim_mode: SPRITE_TRIM_MODE_8

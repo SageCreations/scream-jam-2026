@@ -1,0 +1,4 @@
+images {
+  image: "/ASSETS/inferno/Environment/Wooden_Crate.png"
+}
+extrude_borders: 2

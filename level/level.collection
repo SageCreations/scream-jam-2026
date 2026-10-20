@@ -1,0 +1,59 @@
+name: "level"
+instances {
+  id: "hero"
+  prototype: "/hero/hero.go"
+  position {
+    x: 760.0
+    y: 20.0
+    z: 0.2
+  }
+}
+instances {
+  id: "killer"
+  prototype: "/killer/killer.go"
+  position {
+    x: 440.0
+    y: 20.0
+    z: 0.1
+  }
+}
+scale_along_z: 0
+embedded_instances {
+  id: "background"
+  data: "components {\n"
+  "  id: \"script\"\n"
+  "  component: \"/level/background.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"layer_factory\"\n"
+  "  type: \"factory\"\n"
+  "  data: \"prototype: \\\"/level/objects/background_layer.go\\\"\\n"
+  "\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "controller"
+  data: "components {\n"
+  "  id: \"script\"\n"
+  "  component: \"/level/controller.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"box_factory\"\n"
+  "  type: \"factory\"\n"
+  "  data: \"prototype: \\\"/level/objects/box.go\\\"\\n"
+  "\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "hud"
+  data: "components {\n"
+  "  id: \"gui\"\n"
+  "  component: \"/level/hud.gui\"\n"
+  "}\n"
+  ""
+  position {
+    z: 1.0
+  }
+}

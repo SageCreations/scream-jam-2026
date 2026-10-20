@@ -1,0 +1,55 @@
+-- parallax background built from the city ruin "background 4" layers
+-- each layer is 576x324 pixel art, scaled up to fill the 1280x720 screen
+
+local SCREEN_W = 1280
+local SCREEN_H = 720
+local SCALE = SCREEN_W / 576
+
+-- back to front; factor is the share of the level speed each layer scrolls at
+-- (Plan 1 is the ground strip, so it moves at full speed together with the boxes)
+local layers = {
+	{ anim = hash("Plan 7"), factor = 0.0,  z = -0.9 },	-- sky
+	{ anim = hash("Plan 6"), factor = 0.05, z = -0.8 },	-- clouds
+	{ anim = hash("Plan 5"), factor = 0.15, z = -0.7 },	-- far ruins
+	{ anim = hash("Plan 4"), factor = 0.3,  z = -0.6 },	-- mid ruins
+	{ anim = hash("Plan 3"), factor = 0.5,  z = -0.5 },	-- near ruins
+	{ anim = hash("Plan 2"), factor = 0.75, z = -0.4 },	-- fence
+	{ anim = hash("Plan 1"), factor = 1.0,  z = -0.1 },	-- ground
+}
+
+function init(self)
+	self.speed = 360 -- level speed in pixels/s, overridden by the level controller
+	-- two copies of every layer side by side so it can loop seamlessly
+	for _, layer in ipairs(layers) do
+		layer.pieces = {}
+		for i = 0, 1 do
+			local pos = vmath.vector3(SCREEN_W * (i + 0.5), SCREEN_H * 0.5, layer.z)
+			local id = factory.create("#layer_factory", pos, nil, nil, SCALE)
+			sprite.play_flipbook(msg.url(nil, id, "sprite"), layer.anim)
+			table.insert(layer.pieces, id)
+		end
+	end
+end
+
+function update(self, dt)
+	for _, layer in ipairs(layers) do
+		local dx = self.speed * layer.factor * dt
+		if dx ~= 0 then
+			for _, id in ipairs(layer.pieces) do
+				local pos = go.get_position(id)
+				pos.x = pos.x - dx
+				-- once fully off-screen to the left, move behind the other copy
+				if pos.x <= -SCREEN_W * 0.5 then
+					pos.x = pos.x + SCREEN_W * #layer.pieces
+				end
+				go.set_position(pos, id)
+			end
+		end
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("set_speed") then
+		self.speed = message.speed
+	end
+end

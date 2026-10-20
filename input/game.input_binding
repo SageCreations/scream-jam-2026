@@ -1,0 +1,48 @@
+key_trigger {
+  input: KEY_W
+  action: "qte_w"
+}
+key_trigger {
+  input: KEY_UP
+  action: "qte_w"
+}
+key_trigger {
+  input: KEY_A
+  action: "qte_a"
+}
+key_trigger {
+  input: KEY_LEFT
+  action: "qte_a"
+}
+key_trigger {
+  input: KEY_S
+  action: "qte_s"
+}
+key_trigger {
+  input: KEY_DOWN
+  action: "qte_s"
+}
+key_trigger {
+  input: KEY_D
+  action: "qte_d"
+}
+key_trigger {
+  input: KEY_RIGHT
+  action: "qte_d"
+}
+key_trigger {
+  input: KEY_SPACE
+  action: "jump"
+}
+key_trigger {
+  input: KEY_ENTER
+  action: "enter"
+}
+mouse_trigger {
+  input: MOUSE_BUTTON_1
+  action: "left_button"
+}
+touch_trigger {
+  input: TOUCH_MULTI
+  action: "touch"
+}

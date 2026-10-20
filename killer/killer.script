@@ -1,0 +1,21 @@
+-- the NPC chasing the player; the level controller moves it, this script only animates it
+
+function init(self)
+	-- tint the killer so it reads differently from the player
+	go.set("#sprite", "tint", vmath.vector4(1.0, 0.55, 0.55, 1.0))
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("reset") then
+		sprite.play_flipbook("#sprite", "run")
+	elseif message_id == hash("knock") then
+		-- swing through a box in the way, then keep chasing
+		sprite.play_flipbook("#sprite", "attack", function()
+			sprite.play_flipbook("#sprite", "run")
+		end)
+	elseif message_id == hash("attack") then
+		sprite.play_flipbook("#sprite", "attack", function()
+			sprite.play_flipbook("#sprite", "idle")
+		end)
+	end
+end

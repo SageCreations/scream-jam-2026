@@ -1,0 +1,76 @@
+local PASS_COLOR = vmath.vector4(0.3, 1.0, 0.3, 1.0)
+local FAIL_COLOR = vmath.vector4(1.0, 0.25, 0.2, 1.0)
+local WHITE = vmath.vector4(1, 1, 1, 1)
+
+local function hide_qte(self)
+	gui.cancel_animations(self.qte_timer, "size.x")
+	gui.cancel_animations(self.qte, gui.PROP_COLOR)
+	gui.set_enabled(self.qte, false)
+end
+
+local function show_qte(self, label, time)
+	gui.cancel_animations(self.qte, gui.PROP_COLOR)
+	gui.cancel_animations(self.qte, gui.PROP_SCALE)
+	gui.set_text(self.qte, label)
+	gui.set_color(self.qte, WHITE)
+	gui.set_scale(self.qte, vmath.vector3(2, 2, 1))
+	gui.set_enabled(self.qte, true)
+	-- the timer bar shrinks to nothing as the box reaches the player
+	gui.cancel_animations(self.qte_timer, "size.x")
+	gui.set_size(self.qte_timer, self.qte_timer_size)
+	gui.animate(self.qte_timer, "size.x", 0, gui.EASING_LINEAR, time)
+end
+
+local function qte_result(self, success)
+	gui.cancel_animations(self.qte_timer, "size.x")
+	gui.set_color(self.qte, success and PASS_COLOR or FAIL_COLOR)
+	gui.animate(self.qte, gui.PROP_SCALE, vmath.vector3(2.6, 2.6, 1), gui.EASING_OUTBACK, 0.15)
+	gui.animate(self.qte, gui.PROP_COLOR, vmath.vector4(1, 1, 1, 0), gui.EASING_LINEAR, 0.3, 0.2, function()
+		gui.set_enabled(self.qte, false)
+	end)
+end
+
+function init(self)
+	self.score = gui.get_node("score")
+	self.gap_fill = gui.get_node("gap_fill")
+	self.gap_fill_width = gui.get_size(self.gap_fill).x
+	self.qte = gui.get_node("qte")
+	self.qte_timer = gui.get_node("qte_timer")
+	self.qte_timer_size = gui.get_size(self.qte_timer)
+	self.game_over = gui.get_node("game_over")
+	self.game_over_info = gui.get_node("game_over_info")
+	gui.set_enabled(self.qte, false)
+	gui.set_enabled(self.game_over, false)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("set_score") then
+		gui.set_text(self.score, message.score .. "m")
+
+	elseif message_id == hash("set_gap") then
+		local fraction = math.max(0, math.min(1, message.fraction))
+		local size = gui.get_size(self.gap_fill)
+		size.x = self.gap_fill_width * fraction
+		gui.set_size(self.gap_fill, size)
+
+	elseif message_id == hash("show_qte") then
+		show_qte(self, message.label, message.time)
+
+	elseif message_id == hash("qte_result") then
+		qte_result(self, message.success)
+
+	elseif message_id == hash("hide_qte") then
+		hide_qte(self)
+
+	elseif message_id == hash("show_game_over") then
+		gui.set_text(self.game_over_info, "You ran " .. message.distance .. "m\nPress SPACE to run again")
+		gui.set_color(self.game_over, vmath.vector4(1, 1, 1, 0))
+		gui.set_enabled(self.game_over, true)
+		gui.animate(self.game_over, gui.PROP_COLOR, WHITE, gui.EASING_OUTQUAD, 0.6, 0.4)
+
+	elseif message_id == hash("reset") then
+		hide_qte(self)
+		gui.set_enabled(self.game_over, false)
+		gui.set_text(self.score, "0m")
+	end
+end

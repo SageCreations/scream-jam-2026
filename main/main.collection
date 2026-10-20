@@ -1,0 +1,6 @@
+name: "main"
+collection_instances {
+  id: "level"
+  collection: "/level/level.collection"
+}
+scale_along_z: 0
