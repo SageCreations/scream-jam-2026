@@ -1,8 +1,11 @@
 [project]
 title = Screaming Runner
+dependencies#0 = https://github.com/Insality/defold-event/archive/refs/tags/21.zip
+dependencies#1 = https://github.com/Insality/druid/archive/refs/tags/1.4.1.zip
+dependencies#2 = https://github.com/britzl/monarch/archive/refs/tags/6.0.3.zip
 
 [bootstrap]
-main_collection = /main/main.collectionc
+main_collection = /Menu_UI/Menu_Testing.collectionc
 
 [input]
 game_binding = /input/game.input_bindingc

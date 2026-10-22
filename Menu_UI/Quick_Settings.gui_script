@@ -1,0 +1,44 @@
+local druid = require("druid.druid")
+
+local sound_state = false
+
+local function refresh_text(self)
+	local text_sound = "Sound ".. (sound_state and "On" or "Off" )
+	self.text_sound:set_text(text_sound)
+end
+
+local function on_sound(self)
+	sound_state = not sound_state
+	print("Hello Nyah Sound")
+	refresh_text(self)
+end
+
+local function quit_menu(self)
+	print("Quit To Menu Pressed")
+end
+
+function init(self)
+	self.druid = druid.new(self)
+	
+	self.button = self.druid:new_button("Quit_Button/Root", quit_menu)
+	self.button = self.druid:new_button("Sound_Button/Root", on_sound )
+	self.text_sound = self.druid:new_text("Sound_Button/Text")
+	
+	refresh_text(self) 
+end
+
+function final(self)
+	self.druid:final()
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end
