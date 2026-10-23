@@ -63,7 +63,7 @@ function on_message(self, message_id, message, sender)
 		hide_qte(self)
 
 	elseif message_id == hash("show_game_over") then
-		gui.set_text(self.game_over_info, "You ran " .. message.distance .. "m\nPress SPACE to run againm\nPress Q to return to Menu")
+		gui.set_text(self.game_over_info, "You ran " .. message.distance .. "m\nPress SPACE to run again\nPress Q to return to Menu")
 		gui.set_color(self.game_over, vmath.vector4(1, 1, 1, 0))
 		gui.set_enabled(self.game_over, true)
 		gui.animate(self.game_over, gui.PROP_COLOR, WHITE, gui.EASING_OUTQUAD, 0.6, 0.4)

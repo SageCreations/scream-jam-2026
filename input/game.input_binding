@@ -39,6 +39,10 @@ key_trigger {
   action: "enter"
 }
 key_trigger {
+  input: KEY_ESC
+  action: "Quit"
+}
+key_trigger {
   input: KEY_Q
   action: "Quit"
 }

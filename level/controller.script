@@ -212,6 +212,12 @@ function on_input(self, action_id, action)
 	if not action.pressed then
 		return
 	end
+
+	if action_id == QUIT_MENU then
+		msg.post("Scene_Loader:/Game_Loader#Scene_Loader","Quit_Game")
+		pprint("SCENE MUST HAVE GONE TO MENU")
+	end
+	
 	if self.state == "over" then
 		if is_any(action_id, RESTART_ACTIONS) then
 			start(self)
@@ -226,12 +232,13 @@ function on_input(self, action_id, action)
 				break
 			end
 		end
+		
 
 ----------------------- TRY TO MAKE THIS SMOOTHER IF YOU CAN PLEASE I GOT TIRED TBH
-		if action_id == QUIT_MENU then 
-			msg.post("Scene_Loader:/Game_Loader#Scene_Loader","Quit_Game")
-			pprint("SCENE MUST HAVE GONE TO MENU")
-		end
+		-- if action_id == QUIT_MENU then 
+		-- 	msg.post("Scene_Loader:/Game_Loader#Scene_Loader","Quit_Game")
+		-- 	pprint("SCENE MUST HAVE GONE TO MENU")
+		-- end
 -----------------------------------------------------
-		end
+	end
 end
