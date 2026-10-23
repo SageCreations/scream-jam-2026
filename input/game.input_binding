@@ -38,6 +38,10 @@ key_trigger {
   input: KEY_ENTER
   action: "enter"
 }
+key_trigger {
+  input: KEY_Q
+  action: "Quit"
+}
 mouse_trigger {
   input: MOUSE_BUTTON_1
   action: "touch"

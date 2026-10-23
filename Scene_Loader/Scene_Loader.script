@@ -30,35 +30,16 @@ function on_message(self, message_id, message, sender)
 		monarch.hide("Main_Menu")
 		monarch.show("Settings")
 	end
-	if message_id == hash("Game_Over") then
-		monarch.hide("Level_One")
-		monarch.show("Game_Over")
-	end
-	if message_id == hash("Leave_Settings") then
-		monarch.hide("Game_Settings")
+	if message_id == hash("Exit_Settings") then
+		monarch.hide("Settings")
 		monarch.show("Main_Menu")
 	end
 	if message_id == hash("Exit_Credits") then
 		monarch.hide("Credits")
 		monarch.show("Main_Menu")
 	end
-	if message_id == hash("Pause_Game_Menu") then 
-		monarch.show("Game_Menu")
-	end
-	if message_id == hash("Resume_Game") then
-		monarch.hide("Game_Menu")
-	end
-	if message_id == hash("Quit_To_Menu") then
-		monarch.hide("Game_Over")
-		monarch.show("Main_Menu")
-	end
-	if message_id == hash("Try_Again") then
-		monarch.hide("Game_Over")
-		monarch.show("Juan_Room")
-	end
-	if message_id == hash("Quit_Level") then
-		monarch.hide("Juan_Room")
-		monarch.hide("Game_Menu")
+	if message_id == hash("Quit_Game") then
+		monarch.hide("Game")
 		monarch.show("Main_Menu")
 	end
 end
