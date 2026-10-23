@@ -8,116 +8,109 @@ textures {
   texture: "/druid/druid.atlas"
 }
 nodes {
-  position {
-    x: 640.0
-    y: 360.0
-  }
   size {
-    x: 426.0
-    y: 400.0
-  }
-  color {
-    x: 0.101960786
-    y: 0.101960786
-    z: 0.101960786
+    x: 1280.0
+    y: 720.0
   }
   type: TYPE_BOX
-  texture: "druid/ui_circle_64"
-  id: "Body"
-  xanchor: XANCHOR_LEFT
-  yanchor: YANCHOR_TOP
-  inherit_alpha: true
-  slice9 {
-    x: 32.0
-    y: 32.0
-    z: 32.0
-    w: 32.0
-  }
-}
-nodes {
-  position {
-    y: 200.0
-  }
-  size {
-    x: 426.0
-    y: 100.0
-  }
-  color {
-    x: 0.6
-    y: 0.6
-    z: 0.6
-  }
-  type: TYPE_BOX
-  texture: "druid/ui_circle_64"
-  id: "Header"
+  id: "Root"
   xanchor: XANCHOR_LEFT
   yanchor: YANCHOR_TOP
   pivot: PIVOT_N
-  parent: "Body"
   inherit_alpha: true
-  slice9 {
-    x: 32.0
-    y: 32.0
-    z: 32.0
-    w: 32.0
-  }
-}
-nodes {
-  position {
-    y: -50.0
-  }
-  size {
-    x: 350.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "Settings\n"
-  ""
-  font: "druid_text_bold"
-  id: "text"
-  parent: "Header"
-  inherit_alpha: true
+  visible: false
 }
 nodes {
   type: TYPE_TEMPLATE
-  id: "Sound_Button"
-  parent: "Body"
+  id: "Pop_Up_Temp"
+  parent: "Root"
   inherit_alpha: true
-  template: "/Menu_UI/Widget_Templates/Button_Temp.gui"
+  template: "/Menu_UI/Templates_and_GUI/Pop_Up_Temp.gui"
 }
 nodes {
+  size {
+    x: 426.0
+    y: 600.0
+  }
   type: TYPE_BOX
-  id: "Sound_Button/Root"
-  parent: "Sound_Button"
+  id: "Pop_Up_Temp/Root"
+  parent: "Pop_Up_Temp"
+  overridden_fields: 4
   template_node_child: true
 }
 nodes {
+  position {
+    y: 300.0
+  }
   type: TYPE_BOX
-  id: "Sound_Button/Button"
-  parent: "Sound_Button/Root"
+  id: "Pop_Up_Temp/Title"
+  parent: "Pop_Up_Temp/Root"
+  overridden_fields: 1
   template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  id: "Pop_Up_Temp/text"
+  parent: "Pop_Up_Temp/Title"
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 310.0
+  }
+  type: TYPE_TEMPLATE
+  id: "Sound_Button"
+  parent: "Root"
+  inherit_alpha: true
+  template: "/Menu_UI/Templates_and_GUI/Button_Temp.gui"
 }
 nodes {
   color {
-    x: 0.5019608
-    y: 0.5019608
-    z: 0.5019608
+    x: 0.2
+    y: 0.2
+    z: 0.2
   }
-  type: TYPE_TEXT
-  id: "Sound_Button/Text"
-  parent: "Sound_Button/Button"
+  type: TYPE_BOX
+  id: "Sound_Button/Root"
+  parent: "Sound_Button"
   overridden_fields: 5
   template_node_child: true
 }
 nodes {
+  color {
+    x: 0.9019608
+    y: 0.9019608
+    z: 0.9019608
+  }
+  type: TYPE_BOX
+  id: "Sound_Button/Button"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  parent: "Sound_Button/Root"
+  overridden_fields: 5
+  overridden_fields: 12
+  overridden_fields: 13
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  text: "Sound"
+  id: "Sound_Button/Text"
+  parent: "Sound_Button/Button"
+  overridden_fields: 8
+  template_node_child: true
+}
+nodes {
   position {
-    y: -125.0
+    x: 640.0
+    y: 200.0
   }
   type: TYPE_TEMPLATE
   id: "Quit_Button"
-  parent: "Body"
+  parent: "Root"
   inherit_alpha: true
-  template: "/Menu_UI/Widget_Templates/Button_Temp.gui"
+  template: "/Menu_UI/Templates_and_GUI/Button_Temp.gui"
 }
 nodes {
   type: TYPE_BOX
@@ -127,27 +120,64 @@ nodes {
 }
 nodes {
   color {
-    x: 0.8
-    y: 0.2
-    z: 0.2
+    y: 0.0
+    z: 0.0
   }
   type: TYPE_BOX
   id: "Quit_Button/Button"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
   parent: "Quit_Button/Root"
   overridden_fields: 5
+  overridden_fields: 12
+  overridden_fields: 13
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  text: "Quit"
+  id: "Quit_Button/Text"
+  parent: "Quit_Button/Button"
+  overridden_fields: 8
+  template_node_child: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 425.0
+  }
+  type: TYPE_TEMPLATE
+  id: "Resume"
+  parent: "Root"
+  inherit_alpha: true
+  template: "/Menu_UI/Templates_and_GUI/Button_Temp.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "Resume/Root"
+  parent: "Resume"
   template_node_child: true
 }
 nodes {
   color {
-    x: 0.5019608
-    y: 0.5019608
-    z: 0.5019608
+    x: 0.0
+    z: 0.0
   }
-  type: TYPE_TEXT
-  text: "Quit To Menu"
-  id: "Quit_Button/Text"
-  parent: "Quit_Button/Button"
+  type: TYPE_BOX
+  id: "Resume/Button"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  parent: "Resume/Root"
   overridden_fields: 5
+  overridden_fields: 12
+  overridden_fields: 13
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  text: "Resume"
+  id: "Resume/Text"
+  parent: "Resume/Button"
   overridden_fields: 8
   template_node_child: true
 }

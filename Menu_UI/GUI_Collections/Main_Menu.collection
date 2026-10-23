@@ -1,0 +1,10 @@
+name: "Main_Menu"
+scale_along_z: 0
+embedded_instances {
+  id: "go"
+  data: "components {\n"
+  "  id: \"Main_Menu\"\n"
+  "  component: \"/Menu_UI/Templates_and_GUI/Main_Menu.gui\"\n"
+  "}\n"
+  ""
+}

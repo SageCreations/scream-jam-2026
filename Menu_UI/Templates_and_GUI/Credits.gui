@@ -1,0 +1,80 @@
+script: "/Menu_UI/GUI_Collections/Credits.gui_script"
+fonts {
+  name: "druid_text_bold"
+  font: "/druid/fonts/druid_text_bold.font"
+}
+textures {
+  name: "background"
+  texture: "/def-runner/background.atlas"
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+  }
+  size {
+    x: 1280.0
+    y: 720.0
+  }
+  type: TYPE_BOX
+  texture: "background/Plan 2"
+  id: "box"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Progamming and HUD : Edward Cruz\n"
+  "\n"
+  "GUI and UI : Pablo Garcia Rico\n"
+  "\n"
+  "Assets : CraftPix \n"
+  ""
+  font: "druid_text_bold"
+  id: "text"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  parent: "box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -530.0
+    y: 310.0
+  }
+  type: TYPE_TEMPLATE
+  id: "Back_Menu"
+  parent: "box"
+  inherit_alpha: true
+  template: "/Menu_UI/Templates_and_GUI/Button_Temp.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "Back_Menu/Root"
+  parent: "Back_Menu"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "Back_Menu/Button"
+  parent: "Back_Menu/Root"
+  alpha: 0.0
+  overridden_fields: 30
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  text: "Back"
+  id: "Back_Menu/Text"
+  parent: "Back_Menu/Button"
+  overridden_fields: 8
+  overridden_fields: 21
+  template_node_child: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

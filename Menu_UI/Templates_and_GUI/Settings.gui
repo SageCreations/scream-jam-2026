@@ -1,0 +1,158 @@
+fonts {
+  name: "druid_text_bold"
+  font: "/druid/fonts/druid_text_bold.font"
+}
+textures {
+  name: "background"
+  texture: "/def-runner/background.atlas"
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+  }
+  size {
+    x: 1280.0
+    y: 720.0
+  }
+  type: TYPE_BOX
+  texture: "background/Plan 3"
+  id: "root"
+  xanchor: XANCHOR_LEFT
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 525.0
+  }
+  size {
+    x: 175.0
+    y: 25.0
+  }
+  type: TYPE_TEXT
+  text: "Display Size"
+  font: "druid_text_bold"
+  id: "Display"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  outline {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+  parent: "root"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -75.0
+    y: -25.0
+  }
+  size {
+    x: 20.0
+    y: 20.0
+  }
+  type: TYPE_BOX
+  id: "480p"
+  parent: "Display"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 85.0
+  }
+  size {
+    x: 150.0
+    y: 25.0
+  }
+  type: TYPE_TEXT
+  text: "640x480"
+  font: "system_font"
+  id: "SD_Text"
+  shadow {
+    x: 0.302
+    y: 0.302
+    z: 0.302
+  }
+  parent: "480p"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -75.0
+    y: -50.0
+  }
+  size {
+    x: 20.0
+    y: 20.0
+  }
+  type: TYPE_BOX
+  id: "720p"
+  parent: "Display"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 85.0
+  }
+  size {
+    x: 150.0
+    y: 25.0
+  }
+  type: TYPE_TEXT
+  text: "1280x720"
+  font: "system_font"
+  id: "HD_Text"
+  shadow {
+    x: 0.302
+    y: 0.302
+    z: 0.302
+  }
+  parent: "720p"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -75.0
+    y: -75.0
+  }
+  size {
+    x: 20.0
+    y: 20.0
+  }
+  type: TYPE_BOX
+  id: "1080p"
+  parent: "Display"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 85.0
+  }
+  size {
+    x: 150.0
+    y: 25.0
+  }
+  type: TYPE_TEXT
+  text: "1920x1080"
+  font: "system_font"
+  id: "FHD_Text"
+  shadow {
+    x: 0.302
+    y: 0.302
+    z: 0.302
+  }
+  parent: "1080p"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

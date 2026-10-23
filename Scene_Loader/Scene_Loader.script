@@ -1,0 +1,64 @@
+local monarch = require "monarch.monarch"
+--local game_settings = require "utils.game_settings"
+--local game_data = require "utils.save_system"
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	--self.game_settings_data = game_data.create("/game_settings.dat")
+	--game_settings.start(self.game_settings_data)
+
+	monarch.debug()
+
+	msg.post("#", "init_monarch")
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("init_monarch") then
+		monarch.show("Main_Menu")
+		pprint("Main Menu has been loaded in")
+	end
+	if message_id == hash("Start") then
+		monarch.hide("Main_Menu")
+		monarch.show("Game")
+		pprint("Game SHOULD HAVE STARTED")
+	end
+	if message_id == hash("Credits") then
+		monarch.hide("Main_Menu")
+		monarch.show("Credits")
+	end
+	if message_id == hash("Settings") then
+		monarch.hide("Main_Menu")
+		monarch.show("Settings")
+	end
+	if message_id == hash("Game_Over") then
+		monarch.hide("Level_One")
+		monarch.show("Game_Over")
+	end
+	if message_id == hash("Leave_Settings") then
+		monarch.hide("Game_Settings")
+		monarch.show("Main_Menu")
+	end
+	if message_id == hash("Exit_Credits") then
+		monarch.hide("Credits")
+		monarch.show("Main_Menu")
+	end
+	if message_id == hash("Pause_Game_Menu") then 
+		monarch.show("Game_Menu")
+	end
+	if message_id == hash("Resume_Game") then
+		monarch.hide("Game_Menu")
+	end
+	if message_id == hash("Quit_To_Menu") then
+		monarch.hide("Game_Over")
+		monarch.show("Main_Menu")
+	end
+	if message_id == hash("Try_Again") then
+		monarch.hide("Game_Over")
+		monarch.show("Juan_Room")
+	end
+	if message_id == hash("Quit_Level") then
+		monarch.hide("Juan_Room")
+		monarch.hide("Game_Menu")
+		monarch.show("Main_Menu")
+	end
+end

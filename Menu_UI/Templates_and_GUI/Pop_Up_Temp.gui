@@ -8,33 +8,24 @@ textures {
 }
 nodes {
   position {
-    x: -5.0
+    x: 640.0
+    y: 360.0
   }
   size {
-    x: 200.0
-    y: 100.0
+    x: 426.0
+    y: 500.0
   }
   color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
   }
   type: TYPE_BOX
+  texture: "druid/ui_circle_64"
   id: "Root"
   xanchor: XANCHOR_LEFT
   yanchor: YANCHOR_TOP
   inherit_alpha: true
-  alpha: 0.0
-}
-nodes {
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_BOX
-  texture: "druid/ui_circle_64"
-  id: "Button"
-  parent: "Root"
   slice9 {
     x: 32.0
     y: 32.0
@@ -43,15 +34,49 @@ nodes {
   }
 }
 nodes {
+  position {
+    y: 250.0
+  }
   size {
-    x: 200.0
+    x: 426.0
+    y: 100.0
+  }
+  color {
+    x: 0.6
+    y: 0.6
+    z: 0.6
+  }
+  type: TYPE_BOX
+  texture: "druid/ui_circle_64"
+  id: "Title"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  pivot: PIVOT_N
+  parent: "Root"
+  inherit_alpha: true
+  slice9 {
+    x: 32.0
+    y: 32.0
+    z: 32.0
+    w: 32.0
+  }
+}
+nodes {
+  position {
+    y: -50.0
+  }
+  size {
+    x: 350.0
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Mute"
+  text: "Title\n"
+  ""
   font: "druid_text_bold"
-  id: "Text"
-  parent: "Button"
+  id: "text"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  parent: "Title"
   inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"

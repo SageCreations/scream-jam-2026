@@ -1,0 +1,149 @@
+script: "/Menu_UI/GUI_Collections/Main_Menu.gui_script"
+fonts {
+  name: "druid_text_bold"
+  font: "/druid/fonts/druid_text_bold.font"
+}
+textures {
+  name: "background"
+  texture: "/def-runner/background.atlas"
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+  }
+  size {
+    x: 1280.0
+    y: 720.0
+  }
+  type: TYPE_BOX
+  texture: "background/Plan 4"
+  id: "Root"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 301.0
+  }
+  size {
+    x: 400.0
+    y: 100.0
+  }
+  color {
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "He\'s Right Behind YOU\n"
+  ""
+  font: "druid_text_bold"
+  id: "Title"
+  xanchor: XANCHOR_LEFT
+  yanchor: YANCHOR_TOP
+  shadow {
+    x: 0.101960786
+    z: 0.40784314
+  }
+  parent: "Root"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 135.0
+  }
+  type: TYPE_TEMPLATE
+  id: "Game_Button"
+  parent: "Root"
+  inherit_alpha: true
+  template: "/Menu_UI/Templates_and_GUI/Button_Temp.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "Game_Button/Root"
+  parent: "Game_Button"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "Game_Button/Button"
+  parent: "Game_Button/Root"
+  alpha: 0.0
+  overridden_fields: 30
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  text: "Play"
+  id: "Game_Button/Text"
+  parent: "Game_Button/Button"
+  overridden_fields: 8
+  overridden_fields: 21
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEMPLATE
+  id: "Settings"
+  parent: "Root"
+  inherit_alpha: true
+  template: "/Menu_UI/Templates_and_GUI/Button_Temp.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "Settings/Root"
+  parent: "Settings"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "Settings/Button"
+  parent: "Settings/Root"
+  alpha: 0.02
+  overridden_fields: 30
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  text: "Settings"
+  id: "Settings/Text"
+  parent: "Settings/Button"
+  overridden_fields: 8
+  overridden_fields: 21
+  template_node_child: true
+}
+nodes {
+  position {
+    y: -135.0
+  }
+  type: TYPE_TEMPLATE
+  id: "Credits"
+  parent: "Root"
+  inherit_alpha: true
+  template: "/Menu_UI/Templates_and_GUI/Button_Temp.gui"
+}
+nodes {
+  type: TYPE_BOX
+  id: "Credits/Root"
+  parent: "Credits"
+  template_node_child: true
+}
+nodes {
+  type: TYPE_BOX
+  id: "Credits/Button"
+  parent: "Credits/Root"
+  alpha: 0.0
+  overridden_fields: 30
+  template_node_child: true
+}
+nodes {
+  type: TYPE_TEXT
+  text: "Credits"
+  id: "Credits/Text"
+  parent: "Credits/Button"
+  overridden_fields: 8
+  overridden_fields: 21
+  template_node_child: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT
